@@ -142,6 +142,28 @@ Route::post("/staff",[ StaffController::class , "store" ]);
 Route::patch("/staff/{id}", [ StaffController::class , "update" ]);
 Route::delete('/staff/{id}', [ StaffController::class , 'destroy' ]);
 
-use App\Http\Controllers\PostController;
+
+//use App\Http\Controllers\PostController;
 //Route::resource('post', 'PostController');
-Route::resource('post', PostController :: class);
+//Route::resource('post', PostController :: class);
+//Route::resource('profile', 'ProfileController');
+//Route::resource('user', 'UserController');
+//Route::resource('vehicle', 'VehicleController');
+
+use App\Http\Controllers\ProfileController;  //เขียนเพิ่ม
+use App\Http\Controllers\UserController;  //เขียนเพิ่ม
+use App\Http\Controllers\VehicleController;  //เขียนเพิ่ม
+
+Route::resource('profile', ProfileController::class);
+Route::resource('user', UserController::class);
+Route::resource('vehicle', VehicleController::class);
+
+//Route::resource('profile', 'ProfileController');
+//Route::resource('user', 'UserController');
+//Route::resource('vehicle', 'VehicleController');
+//Route::resource('profile', 'ProfileController');
+//Route::resource('user', 'UserController');
+//Route::resource('vehicle', 'VehicleController');
+// Route::resource('profile', 'ProfileController');
+// Route::resource('user', 'UserController');
+// Route::resource('vehicle', 'VehicleController');
