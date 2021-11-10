@@ -7,6 +7,7 @@ use App\Http\Requests;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class PaymentController extends Controller
 {
@@ -17,6 +18,12 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
+        //อ่านค่า order_id จาก url
+        $order_id  = $request->get('order_id');
+        //query order จาก db ด้วย order_id ถ้าไม่มี order แสดง Not found
+        $order = Order::findOrFail($order_id);
+        return view('payment.create' , compact('order') );
+    
         $keyword = $request->get('search');
         $perPage = 25;
 
@@ -32,6 +39,7 @@ class PaymentController extends Controller
 
         return view('payment.index', compact('payment'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +68,12 @@ class PaymentController extends Controller
         }
 
         Payment::create($requestData);
+        Order::where('id',$requestData['order_id'])
+        ->update([
+            'status'=>'checking',
+            'checking_at'=>date("Y-m-d H:i:s"), //timestamp ปัจจุบัน
+        ]);
+
 
         return redirect('payment')->with('flash_message', 'Payment added!');
     }

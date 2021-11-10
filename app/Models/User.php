@@ -44,7 +44,20 @@ class User extends Authenticatable
     ];
     public function profile()
     {
-        return $this->hasOne('App\Models\Profile', 'user_id', 'id' );
+        return $this->hasOne('App\Models\Profile', 'user_id', 'id');
     }
- }
- 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
+    public function order_products()
+    {
+        return $this->hasMany(OrderProduct::class, 'user_id', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'user_id', 'id');
+    }
+}

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
+
+
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests;
 
 class OrderController extends Controller
 {
@@ -19,6 +22,16 @@ class OrderController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
+        switch(Auth::user()->role)
+        {
+            case "admin" : 
+                $order = Order::latest()->paginate($perPage);
+                break;
+            default : 
+                //means guest
+                $order = Order::where('user_id',Auth::id() )->latest()->paginate($perPage);            
+        }       
+
 
         if (!empty($keyword)) {
             $order = Order::where('user_id', 'LIKE', "%$keyword%")
@@ -56,7 +69,15 @@ class OrderController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
+    
+
     {
+        //คำนวณ total 
+        $requestData['total'] = $requestData['quantity'] * $requestData['price'];
+        //ระบุ user_id
+        $requestData['user_id'] = Auth::id();
+        //สร้างข้อมูล
+
         
         $requestData = $request->all();
         

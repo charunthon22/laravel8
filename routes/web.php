@@ -177,3 +177,9 @@ Route::resource('order', OrderController::class);
 Route::resource('payment', PaymentController::class);
 Route::resource('order-product',OrderProductController::class);
 Route::resource('product', ProductController::class);
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('order', OrderController::class);
+    Route::resource('payment', PaymentController::class);
+    Route::resource('order-product', OrderProductController::class);
+});
